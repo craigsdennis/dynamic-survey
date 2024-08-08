@@ -15,7 +15,7 @@
     "@types/common-tags": "^1.8.4",
     "typescript": "^5.5.2",
     "vitest": "1.5.0",
-    "wrangler": "^3.60.3"
+    "wrangler": "^3.66.0"
   },
   "dependencies": {
     "common-tags": "^1.8.2",

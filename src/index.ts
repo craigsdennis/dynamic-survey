@@ -2,7 +2,8 @@ import { Hono } from 'hono';
 import { stripIndents } from 'common-tags';
 
 const VERBOSE = true;
-const MODEL_NAME = '@hf/nousresearch/hermes-2-pro-mistral-7b';
+// const MODEL_NAME = '@hf/nousresearch/hermes-2-pro-mistral-7b';
+const MODEL_NAME = '@cf/meta/llama-3.1-8b-instruct';
 
 type Bindings = {
 	[key in keyof CloudflareBindings]: CloudflareBindings[key];
@@ -23,7 +24,7 @@ async function createNewSurveyTaker(env: Bindings, metadata: any): Promise<numbe
 async function submitSurvey(env: Bindings, surveyTakerId: number, args) {
 	// TODO submit the survey
 	// TODO: return enough information to be be a good message
-	return {surveyId: 1, message: "Survey submitted successfully", args};
+	return { surveyId: 1, message: 'Survey submitted successfully', args };
 }
 
 async function getPreviousMessages(env: Bindings, surveyTakerId: number): Promise<RoleScopedChatInput[]> {
@@ -137,7 +138,7 @@ app.post('/api/chat', async (c) => {
 		for (const tool_call of result.tool_calls) {
 			if (tool_call.name === 'submitSurvey') {
 				const resp = await submitSurvey(c.env, surveyTakerId, tool_call.arguments);
-				const toolMessage: RoleScopedChatInput = { role: 'tool', content: JSON.stringify(resp) };
+				const toolMessage: RoleScopedChatInput = { role: 'ipython', content: JSON.stringify(resp) };
 				messages.push(toolMessage);
 				await addToChatHistory(c.env, surveyTakerId, toolMessage);
 				result = await c.env.AI.run(MODEL_NAME, {
